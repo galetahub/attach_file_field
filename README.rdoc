@@ -1,0 +1,35 @@
+= AttachFileField
+Easy upload files via Swfupload
+
+== Install
+  rails plugin install git://github.com/galetahub/attach_file_field.git
+
+  rails generate attach_file_field  [options]
+
+Runtime options:
+  -f, [--force]    # Overwrite files that already exist
+  -p, [--pretend]  # Run but do not make any changes
+  -q, [--quiet]    # Supress status output
+  -s, [--skip]     # Skip files that already exist
+
+
+== Usage
+
+In Model:
+  class User < ActiveRecord::Base
+    has_one :avatar, :as => :assetable, :dependent => :destroy
+    acts_as_attach_file :avatar
+  end
+
+In View:
+  <% content_for(:head, attach_include_files) %>
+  ...
+  <%= form.attach_file(:avatar, :file_max_size => 1) %>
+  ...
+  
+  <%= form.attach_file(:picture, :swf_params=>{:assetable_type=>'User', 
+                       :assetable_id => current_user.id },
+                       :file_max_size => 2)
+
+
+Copyright (c) 2010 Brainberry, released under the MIT license
