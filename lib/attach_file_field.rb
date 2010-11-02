@@ -86,4 +86,4 @@ module AttachFileField
   end
 end
 
-require 'attach_file_field/railtie' if defined?(Rails)
+require 'attach_file_field/railtie'
