@@ -7,31 +7,42 @@ module AttachFileField
     #                  :file_max_size=>2,
     #                  :upload_path=>new_asset_path_with_session_information('Picture')) %>
     #                            
-	  def attach_file_tag(object, field, options={})
-	    var = options.delete(:object) if options.key?(:object)
-      var ||= @template.instance_variable_get("@#{object}")
+	  def attach_file_tag(object_name, method_name, options={})
+	    object = options.delete(:object) if options.key?(:object)
+      object ||= @template.instance_variable_get("@#{object}")
       
-      value = var.send(field.to_sym)
-      value ||= var.find_by_giud(field.to_sym)
-      guid = var.send("#{field}_hidden")
+      value = object.send(method_name.to_sym)
+      value ||= object.find_by_giud(method_name.to_sym)
+      guid = object.send("#{method_name}_hidden")
       
-      dom_id = "#{object}_#{field}"
+      sanitized_object_name = object_name.to_s.gsub(/\]\[|[^-a-zA-Z0-9:.]/, "_").sub(/_$/, "")
+      sanitized_method_name = method_name.to_s.sub(/\?$/,"")
+            
+      dom_id = [sanitized_object_name, sanitized_method_name].join('_')
 	    button_img = "/attach_file_field/images/select_file.gif"
-	    upload_path = options[:upload_path] || new_asset_path_with_session_information(field)
+	    upload_path = options[:upload_path] || new_asset_path_with_session_information(method_name)
 	    
 	    file_title = options[:file_title] || "JPEG, GIF, PNG or TIFF"
 	    file_max_size = options[:file_max_size] || 10
-	    	    
+	    
+	    label = I18n.t("helpers.label.#{object_name}.#{method_name}", :default => "").presence
+
+	    label ||= if object && object.class.respond_to?(:human_attribute_name)
+        object.class.human_attribute_name(method_name)
+      end
+
+      label ||= method_name.humanize
+	    
 	    inputs = ActiveSupport::SafeBuffer.new
-	    inputs << content_tag(:div, I18n.t("activerecord.attributes.#{object}.#{field}"), :class=>"gr-title")
+	    inputs << content_tag(:div, label, :class=>"gr-title")
 	    inputs << Utils::block_image(dom_id, value)
 	    inputs << Utils::block_file_types(dom_id, file_title, file_max_size)
-      inputs << attach_hidden_field(object, field, var)
+      inputs << attach_hidden_field(object_name, method_name, object)
       inputs << content_tag(:div, nil, :id=>"#{dom_id}_progress")
 	    
 	    swf_params = options[:swf_params] || {}
-	    swf_params[:assetable_type] ||= var.class.name
-      swf_params[:assetable_id] ||= var.try(:id)
+	    swf_params[:assetable_type] ||= object.class.name
+      swf_params[:assetable_id] ||= object.try(:id)
 	    swf_params.update({:button_img => button_img, :file_max_size => file_max_size})
 	    swf_params[:guid] ||= guid
 	    
