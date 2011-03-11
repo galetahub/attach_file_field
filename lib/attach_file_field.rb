@@ -6,6 +6,7 @@ module AttachFileField
   autoload :ViewHelper,   'attach_file_field/view_helper'
   autoload :FormBuilder,  'attach_file_field/form_builder'
   autoload :Middleware,   'attach_file_field/middleware'
+  autoload :Version,      'attach_file_field/version'
   
   module Base
     def self.included(base)

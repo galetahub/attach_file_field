@@ -48,8 +48,7 @@ module AttachFileField
 	    return content_tag(:div, nil, :class => "ill-bl", :id => block_image_id, :style=>"display:none;") if value.nil?
 	    
 	    filename = content_tag(:span, value.filename, :class=>"file-name")
-	    del_link = link_to(tag("image", :src => '/attach_file_field/images/cross_ico.gif', :alt=>'delete'), "/manage/assets/#{value.id}",
-	                       :remote => true, :confirm => I18n.t('manage.confirm_delete'), :class => "del attach_file_delete")
+	    del_link = link_to(tag("image", :src => '/attach_file_field/images/cross_ico.gif', :alt=>'delete'), "/manage/assets/#{value.id}", :remote => true, :method => :delete, :confirm => I18n.t('manage.confirm_delete'), :class => "del attach_file_delete")
 
 	    image = tag("image", :src => value.url(:thumb), :alt=>value.filename, :title=>value.filename)
 	    

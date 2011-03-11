@@ -1,6 +1,6 @@
 # encoding: utf-8
-require 'attach_file_field'
 require 'rails'
+require 'attach_file_field'
 
 module AttachFileField
   class Railtie < ::Rails::Railtie
