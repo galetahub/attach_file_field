@@ -22,8 +22,8 @@ module AttachFileField
       ActionView::Helpers::FormBuilder.send(:include, AttachFileField::FormBuilder)
     end
     
-    generators do
-      require "generators/attach_file_field"
-    end
+    #generators do
+      #require "generators/attach_file_field"
+    #end
   end
 end
