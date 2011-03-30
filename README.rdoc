@@ -22,6 +22,7 @@ In Model:
   end
 
 In View:
+
   <% content_for(:head, attach_include_files) %>
   ...
   <%= form.attach_file(:avatar, :file_max_size => 1) %>
@@ -31,5 +32,9 @@ In View:
                        :assetable_id => current_user.id },
                        :file_max_size => 2)
 
+== SimpleForm integration
 
-Copyright (c) 2010 Brainberry, released under the MIT license
+  <%= form.attach_file :content, :label => false, :input_html => { ... } %>
+
+
+Copyright (c) 2011 Aimbulance, released under the MIT license

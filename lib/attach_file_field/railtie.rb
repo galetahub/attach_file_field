@@ -20,10 +20,10 @@ module AttachFileField
     config.after_initialize do
       ActionView::Base.send(:include, AttachFileField::ViewHelper)
       ActionView::Helpers::FormBuilder.send(:include, AttachFileField::FormBuilder)
+      
+      if Object.const_defined?("SimpleForm")
+        ::SimpleForm::FormBuilder.send :include, AttachFileField::Hooks::SimpleFormBuilder
+      end
     end
-    
-    #generators do
-      #require "generators/attach_file_field"
-    #end
   end
 end
