@@ -12,7 +12,9 @@ module AttachFileField
       end
     
       module InstanceMethods
-        def attach_file(attribute_name, options={}, &block)
+        def attach_file_field(attribute_name, options={}, &block)
+          options[:label] = false
+          
           column     = find_attribute_column(attribute_name)
           input_type = default_input_type(attribute_name, column, options)
 
